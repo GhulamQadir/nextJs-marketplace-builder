@@ -37,7 +37,7 @@ function LatestProduct() {
         {latestProducts?.map((prod) => {
           const { image, name, price, slug } = prod;
           return (
-            <div className="mb-6" key={nanoid()}>
+            <div className="mb-8" key={nanoid()}>
               <Link href={`products/${slug}`}>
                 <div className="relative h-[200px] w-[250px] lg:h-[250px] lg:w-[320px] bg-[#f2f4f9] flex items-center justify-center">
                   <Image
@@ -57,6 +57,11 @@ function LatestProduct() {
                     <p className="text-xs text-[#FB2E86] line-through">
                       ${price - 24}
                     </p>
+                  </div>
+                  <div className="flex justify-center w-full">
+                    <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
+                      Add to Cart
+                    </button>
                   </div>
                 </div>
               </Link>
