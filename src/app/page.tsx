@@ -1,6 +1,5 @@
 import HeroComponent from "../components/HeroComponent";
 import FeaturedProduct from "../components/FeaturedProduct";
-import { nanoid } from "nanoid";
 import LatestProduct from "@/components/LatestProd";
 import WhatWeOffer from "@/components/WhatWeOffer";
 import UniqueFeaturesBanner from "@/components/UniqueFeaturesBanner";
