@@ -1,6 +1,6 @@
-import AccessoriesAndFashionCard from "@/components/AccessroriesAndFashCard";
+// import AccessoriesAndFashionCard from "@/components/AccessroriesAndFashCard";
 // import { accessoriesAndFashion } from "@/data/data";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import { MdOutlineGridView, MdOutlineCalendarViewDay } from "react-icons/md";
 
 function Pages() {
