@@ -65,13 +65,13 @@ function LatestProduct() {
                         ${price - 24}
                       </p>
                     </div>
-                    <div className="flex justify-center w-full">
-                      <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
-                        Add to Cart
-                      </button>
-                    </div>
                   </div>
                 </Link>
+                <div className="flex justify-center w-full">
+                  <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             );
           })}

@@ -61,11 +61,11 @@ function FeaturedProduct() {
                       <div className="w-3 h-[5px] bg-[#00009D] rounded-lg"></div>
                     </div>
                     <p className="font-josefin mt-1">${price}.00</p>
-                    <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
-                      Add to Cart
-                    </button>
                   </div>
                 </Link>
+                <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
+                  Add to Cart
+                </button>
               </div>
             );
           })}
