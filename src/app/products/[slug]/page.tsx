@@ -1,4 +1,5 @@
 "use client";
+import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -17,7 +18,8 @@ interface TProduct {
 }
 
 function ProductPage({ params }: Props) {
-  const [data, setProdData] = useState<TProduct[]>();
+  const [data, setProdData] = useState<TProduct[] | null>(null);
+  const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const fetchProd = async () => {
       const prodData = await client.fetch(
@@ -25,11 +27,12 @@ function ProductPage({ params }: Props) {
         { name, "image":image.asset->url, price, description, stockLevel}`
       );
       setProdData(prodData);
+      setLoading(false);
     };
     fetchProd();
   }, []);
   if (!data) {
-    return <div></div>;
+    return <ProductDetailsSkeleton />;
   }
   const { name, image, price, description, stockLevel } = data[0];
   return (
