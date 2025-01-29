@@ -5,14 +5,13 @@ import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { TProduct } from "@/types/types";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import LoadingSkeleton from "./LoadingSkeleton";
-
+import { useContext } from "react";
+import { CartContext } from "@/context";
 function FeaturedProduct() {
-  const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | null>(
-    null
-  );
+  const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
+  const { cartData, setCartData } = useContext(CartContext);
+
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +23,21 @@ function FeaturedProduct() {
       setLoading(false);
     };
     fetchFeaturedProducts();
+    console.log("local s aya huwa cart lelo", cartData);
   }, []);
+
+  const addToCart = (product: TProduct) => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+    if (cart[product.name]) {
+      cart[product.name] = {
+        ...cart[product.name],
+        quantity: cart[product.name].quantity + 1,
+      };
+    } else {
+      cart[product.name] = { ...product, quantity: 1 };
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
 
   return (
     <div className="text-center my-12">
@@ -38,7 +51,7 @@ function FeaturedProduct() {
         <LoadingSkeleton />
       ) : (
         <div className="flex flex-wrap justify-center gap-x-4 mt-5 lg:w-3/4 m-auto">
-          {featuredProducts?.map((prod) => {
+          {featuredProducts?.map((prod: TProduct) => {
             const { name, price, image, slug } = prod;
             return (
               <div key={nanoid()} className="shadow-lg rounded-xl mb-6">
@@ -63,7 +76,10 @@ function FeaturedProduct() {
                     <p className="font-josefin mt-1">${price}.00</p>
                   </div>
                 </Link>
-                <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
+                <button
+                  onClick={() => addToCart(prod)}
+                  className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
+                >
                   Add to Cart
                 </button>
               </div>
