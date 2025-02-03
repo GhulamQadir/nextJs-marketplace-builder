@@ -15,11 +15,11 @@ export default function Home() {
   const { cartData, setCartData } = useContext(CartContext);
 
   useEffect(() => {
-    const getCart = JSON.parse(localStorage.getItem("cart") || "{}");
-    console.log("getCart", getCart);
-    setCartData(getCart);
-    console.log("cart data", cartData);
+      const getCart =  JSON.parse(localStorage.getItem("cart") || "{}");
+      setCartData(getCart);
   }, []);
+
+ 
   return (
     <div>
       <HeroComponent />

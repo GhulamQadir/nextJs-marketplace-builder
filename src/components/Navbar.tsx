@@ -5,8 +5,8 @@ import { IoSearch } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Drawer } from "antd";
 import { RxCross2 } from "react-icons/rx";
-import { useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "@/context";
 function Navbar() {
   const [open, setOpen] = useState(false);
 
@@ -17,6 +17,7 @@ function Navbar() {
   const onClose = () => {
     setOpen(false);
   };
+
   return (
     <div className="w-full lg:py-2 md:py-[5px] py-4 flex justify-center z-10 sticky top-[65px] md:top-[40px] bg-white">
       <div className="lg:w-[85%] px-2 w-full flex justify-between lg:justify-around items-center font-josefin">
@@ -88,16 +89,24 @@ function Navbar() {
                 </Link>
               </li>
               <li className="mt-3">
-                <Link href={"#"} onClick={onClose}>Products</Link>
+                <Link href={"#"} onClick={onClose}>
+                  Products
+                </Link>
               </li>
               <li className="mt-3">
-                <Link href={"#"} onClick={onClose}>Blog</Link>
+                <Link href={"#"} onClick={onClose}>
+                  Blog
+                </Link>
               </li>
               <li className="mt-3">
-                <Link href={"#"} onClick={onClose}>Shop</Link>
+                <Link href={"#"} onClick={onClose}>
+                  Shop
+                </Link>
               </li>
               <li className="mt-3">
-                <Link href={"#"} onClick={onClose}>Contact</Link>
+                <Link href={"#"} onClick={onClose}>
+                  Contact
+                </Link>
               </li>
             </ul>
             <div className="mt-5">

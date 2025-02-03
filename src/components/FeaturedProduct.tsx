@@ -9,8 +9,8 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import { useContext } from "react";
 import { CartContext } from "@/context";
 function FeaturedProduct() {
-  const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
   const { cartData, setCartData } = useContext(CartContext);
+  const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
 
   const [isLoading, setLoading] = useState(true);
 
@@ -23,20 +23,21 @@ function FeaturedProduct() {
       setLoading(false);
     };
     fetchFeaturedProducts();
-    console.log("local s aya huwa cart lelo", cartData);
   }, []);
 
   const addToCart = (product: TProduct) => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-    if (cart[product.name]) {
-      cart[product.name] = {
-        ...cart[product.name],
-        quantity: cart[product.name].quantity + 1,
+    const prevCartData = { ...cartData };
+    if (prevCartData[product.name]) {
+      prevCartData[product.name] = {
+        ...prevCartData[product.name],
+        quantity: prevCartData[product.name].quantity + 1,
       };
+      setCartData(prevCartData);
     } else {
-      cart[product.name] = { ...product, quantity: 1 };
+      prevCartData[product.name] = { ...product, quantity: 1 };
+      setCartData(prevCartData);
     }
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cartData));
   };
 
   return (

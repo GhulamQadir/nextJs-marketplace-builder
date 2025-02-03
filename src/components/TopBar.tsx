@@ -1,11 +1,22 @@
+"use client";
 import { AiOutlineMail } from "react-icons/ai";
 import { MdOutlinePhoneInTalk } from "react-icons/md";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { FiShoppingCart } from "react-icons/fi";
+import { useContext, useEffect } from "react";
+import { CartContext } from "@/context";
 
 function TopBar() {
+  const { cartData } = useContext(CartContext);
+
+  useEffect(() => {
+    console.log("cart updated", cartData);
+  }, [cartData]);
+
+  const orderCount = Object.keys(cartData).length;
+  console.log(orderCount);
   return (
     <div className="bg-violet-600 w-full flex justify-around flex-wrap sticky top-0 z-10 px-2 py-2 items-center text-white font-josefin font-semibold text-base">
       <div className="flex gap-x-10 items-center lg:mb-0 mb-1">
@@ -38,6 +49,7 @@ function TopBar() {
           </li>
           <li>
             <FiShoppingCart size={22} />
+            {orderCount}
           </li>
         </ul>
       </div>
