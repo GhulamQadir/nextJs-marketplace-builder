@@ -47,9 +47,9 @@ function TopBar() {
             <p>Wishlist</p>
             <CiHeart size={20} />
           </li>
-          <li>
+          <li className="relative p-1">
             <FiShoppingCart size={22} />
-            {orderCount}
+            <p className="absolute top-[-9px] right-[4px]">{orderCount}</p>
           </li>
         </ul>
       </div>

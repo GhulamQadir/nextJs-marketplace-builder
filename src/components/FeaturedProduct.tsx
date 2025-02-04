@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { TProduct } from "@/types/types";
+import { TProduct, CartFunction } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
-import { useContext } from "react";
-import { CartContext } from "@/context";
-function FeaturedProduct() {
-  const { cartData, setCartData } = useContext(CartContext);
+import SnackBarComponent from "./SnackBar";
+
+function FeaturedProduct({
+  addToCart,
+  handleClose,
+  snackBarState,
+}: CartFunction) {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
 
   const [isLoading, setLoading] = useState(true);
@@ -25,23 +28,12 @@ function FeaturedProduct() {
     fetchFeaturedProducts();
   }, []);
 
-  const addToCart = (product: TProduct) => {
-    const prevCartData = { ...cartData };
-    if (prevCartData[product.name]) {
-      prevCartData[product.name] = {
-        ...prevCartData[product.name],
-        quantity: prevCartData[product.name].quantity + 1,
-      };
-      setCartData(prevCartData);
-    } else {
-      prevCartData[product.name] = { ...product, quantity: 1 };
-      setCartData(prevCartData);
-    }
-    localStorage.setItem("cart", JSON.stringify(cartData));
-  };
-
   return (
     <div className="text-center my-12">
+      <SnackBarComponent
+        snackBarState={snackBarState}
+        handleClose={handleClose}
+      />
       <div className="mb-3">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
           Featured Products

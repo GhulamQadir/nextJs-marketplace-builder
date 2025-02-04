@@ -1,15 +1,21 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { TProduct } from "@/types/types";
+import { TProduct, CartFunction } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import LoadingSkeleton from "./LoadingSkeleton";
+import SnackBarComponent from "./SnackBar";
 
-function LatestProduct() {
+function LatestProduct({
+  addToCart,
+  handleClose,
+  snackBarState,
+}: CartFunction) {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
   const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(true);
     const fetchLatestProducts = async () => {
@@ -23,6 +29,10 @@ function LatestProduct() {
   }, []);
   return (
     <div>
+      <SnackBarComponent
+        snackBarState={snackBarState}
+        handleClose={handleClose}
+      />
       <div className="text-center">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
           Latest Products
@@ -68,7 +78,10 @@ function LatestProduct() {
                   </div>
                 </Link>
                 <div className="flex justify-center w-full">
-                  <button className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white">
+                  <button
+                    onClick={() => addToCart(prod)}
+                    className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
+                  >
                     Add to Cart
                   </button>
                 </div>
