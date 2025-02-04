@@ -28,6 +28,7 @@ function FeaturedProduct({
     fetchFeaturedProducts();
   }, []);
 
+
   return (
     <div className="text-center my-12">
       <SnackBarComponent

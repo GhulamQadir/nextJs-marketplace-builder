@@ -35,17 +35,17 @@ export default function Home() {
   };
 
   const addToCart = (product: TProduct) => {
-    const prevCartData = { ...cartData };
-    if (prevCartData[product.name]) {
-      prevCartData[product.name] = {
-        ...prevCartData[product.name],
-        quantity: prevCartData[product.name].quantity + 1,
+    const newCartData = { ...cartData };
+    if (newCartData[product.name]) {
+      newCartData[product.name] = {
+        ...newCartData[product.name],
+        quantity: newCartData[product.name].quantity + 1,
       };
-      setCartData(prevCartData);
+      setCartData(newCartData);
       openSnackBar("Product Quantity Increased");
     } else {
-      prevCartData[product.name] = { ...product, quantity: 1 };
-      setCartData(prevCartData);
+      newCartData[product.name] = { ...product, quantity: 1 };
+      setCartData(newCartData);
       openSnackBar("Product added to Cart");
     }
     localStorage.setItem("cart", JSON.stringify(cartData));

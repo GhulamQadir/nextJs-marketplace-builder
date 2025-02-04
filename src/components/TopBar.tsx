@@ -7,6 +7,7 @@ import { CiHeart } from "react-icons/ci";
 import { FiShoppingCart } from "react-icons/fi";
 import { useContext, useEffect } from "react";
 import { CartContext } from "@/context";
+import Link from "next/link";
 
 function TopBar() {
   const { cartData } = useContext(CartContext);
@@ -48,8 +49,10 @@ function TopBar() {
             <CiHeart size={20} />
           </li>
           <li className="relative p-1">
-            <FiShoppingCart size={22} />
-            <p className="absolute top-[-9px] right-[4px]">{orderCount}</p>
+            <Link href={"/cart"}>
+              <FiShoppingCart size={22} />
+              <p className="absolute top-[-9px] right-[-1px]">{orderCount}</p>
+            </Link>
           </li>
         </ul>
       </div>
