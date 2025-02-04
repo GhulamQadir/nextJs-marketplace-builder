@@ -13,10 +13,8 @@ export interface SnackBarT {
   horizontal: "left" | "center" | "right";
   snackBarMessage: string;
 }
-export interface CartFunction {
+export interface CartSnackT {
   addToCart: (product: TProduct) => void;
   snackBarState: SnackBarT;
   handleClose: () => void;
 }
-
-// export { TProduct, CartFunction };

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { TProduct, CartFunction } from "@/types/types";
+import { TProduct, CartSnackT } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 
@@ -12,7 +12,7 @@ function FeaturedProduct({
   addToCart,
   handleClose,
   snackBarState,
-}: CartFunction) {
+}: CartSnackT) {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
 
   const [isLoading, setLoading] = useState(true);

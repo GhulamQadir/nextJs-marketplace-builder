@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { TProduct, CartFunction } from "@/types/types";
+import { TProduct, CartSnackT } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -12,7 +12,7 @@ function LatestProduct({
   addToCart,
   handleClose,
   snackBarState,
-}: CartFunction) {
+}: CartSnackT) {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
   const [isLoading, setLoading] = useState(true);
 
