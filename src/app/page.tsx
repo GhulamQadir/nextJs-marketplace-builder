@@ -48,7 +48,7 @@ export default function Home() {
       setCartData(newCartData);
       openSnackBar("Product added to Cart");
     }
-    localStorage.setItem("cart", JSON.stringify(cartData));
+    localStorage.setItem("cart", JSON.stringify(newCartData));
   };
 
   const handleCloseSnackBar = () => {

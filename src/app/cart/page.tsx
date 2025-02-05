@@ -1,8 +1,8 @@
 "use client";
+import CartCard from "@/components/CartCard";
 import { CartContext } from "@/context";
 import { TProduct } from "@/types/types";
-import Image from "next/image";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
   useEffect(() => {
@@ -17,6 +17,7 @@ function Cart() {
       quantity: newCartData[prodKey].quantity + 1,
     };
     setCartData(newCartData);
+    localStorage.setItem("cart", JSON.stringify(newCartData));
   };
 
   const decreaseQuantity = (prodKey: string) => {
@@ -27,46 +28,59 @@ function Cart() {
         quantity: newCartData[prodKey].quantity - 1,
       };
       setCartData(newCartData);
+      localStorage.setItem("cart", JSON.stringify(newCartData));
     } else if (cartData[prodKey].quantity > 0) {
       const newCartData = { ...cartData };
       delete newCartData[prodKey];
       setCartData(newCartData);
+      localStorage.setItem("cart", JSON.stringify(newCartData));
     }
   };
+
+  const cartTotal = useMemo(() => {
+    let total: number = 10;
+    const salesTaxRate: number = 10;
+    for (const { price, quantity } of Object.values(cartData)) {
+      total += price * quantity;
+    }
+    const gst: number = (total * salesTaxRate) / 100;
+    const grandTotal: number = total + gst;
+    return { total, gst, grandTotal };
+  }, [cartData]);
+
   return (
     <div className="lg:px-7 my-7">
-      {Object.values(cartData).map((prod: TProduct) => {
-        const { name, price, image, slug, quantity } = prod;
+      {Object.values(cartData)?.map((prod: TProduct) => {
         return (
-          <div className="flex flex-wrap items-center justify-around my-4 border-t-[1px] border-gray-300 py-4">
-            <div className="w-[300px] flex items-center gap-x-2">
-              <Image src={image} height={80} width={120} alt={slug} />
-              <p className="font-bold">{name}</p>
-            </div>
-            <div className="w-[80px]">
-              <p className="font-bold">${price}</p>
-            </div>
-            <div className="w-[150px] flex justify-center items-center gap-x-2">
-              <button
-                onClick={() => decreaseQuantity(name)}
-                className="border-[2px] border-red-400 rounded-full px-[5px] h-[19px] font-bold flex items-center"
-              >
-                -
-              </button>
-              <p className="text-sm">{quantity}</p>
-              <button
-                onClick={() => increaseQuantity(name)}
-                className="border-[2px] border-green-800 rounded-full px-[5px] h-[19px] font-bold flex items-center"
-              >
-                +
-              </button>
-            </div>
-            <div className="w-[90px]">
-              <p className="font-bold">${price * quantity}</p>
-            </div>
-          </div>
+          <CartCard
+            key={prod.slug}
+            product={prod}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+          />
         );
       })}
+      {Object.keys(cartData).length && (
+        <div className="flex flex-col justify-end items-end px-2 mt-3">
+          <div className="flex w-[70%] lg:w-[20%] justify-between">
+            <p className="text-xl font-bold">Subtotal: </p>
+            <p className="text-xl font-bold">{cartTotal.total}</p>
+          </div>
+          <div className="flex w-[70%] lg:w-[20%] justify-between">
+            <p className="text-xl font-bold">Sales Tax:</p>
+            <p className="text-xl font-bold">{cartTotal.gst}</p>
+          </div>
+          <div className="flex w-[70%] lg:w-[20%] justify-between">
+            <p className="text-xl font-bold">Grand Total</p>
+            <p className="text-xl font-bold">{cartTotal.grandTotal}</p>
+          </div>
+          <div className="w-[70%] lg:w-[20%] flex justify-center mt-4">
+            <button className="bg-[#FB2E86] h-[30px] px-2 text-white">
+              Checkout
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
