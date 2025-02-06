@@ -1,10 +1,14 @@
 "use client";
 import CartCard from "@/components/CartCard";
+import { useUser } from "@clerk/clerk-react";
 import { CartContext } from "@/context";
 import { TProduct } from "@/types/types";
 import { useContext, useEffect, useMemo } from "react";
+import Link from "next/link";
+
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
+  const { isSignedIn, user, isLoaded } = useUser();
   useEffect(() => {
     const getData = JSON.parse(localStorage.getItem("cart") || "{}");
     setCartData(getData);
@@ -19,6 +23,20 @@ function Cart() {
     setCartData(newCartData);
     localStorage.setItem("cart", JSON.stringify(newCartData));
   };
+  if (!isLoaded) {
+    return null;
+  }
+  if (!user)
+    return (
+      <div className="flex justify-center my-36">
+        <p className="text-2xl">
+          Please Sign in to start shopping{" "}
+          <Link href={"/sign-in"} className="text-blue-800 underline">
+            Sign In
+          </Link>
+        </p>
+      </div>
+    );
 
   const decreaseQuantity = (prodKey: string) => {
     if (cartData[prodKey].quantity > 1) {
@@ -50,6 +68,7 @@ function Cart() {
 
   return (
     <div className="lg:px-7 my-7">
+      <p>{user.firstName}</p>
       {Object.values(cartData)?.map((prod: TProduct) => {
         return (
           <CartCard

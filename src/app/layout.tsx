@@ -13,6 +13,8 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  ClerkLoading,
+  ClerkLoaded,
 } from "@clerk/nextjs";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,28 +38,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {/* <header> */}
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          {/* </header> */}
-          <CartProvider>
-            <TopBar />
-            <Navbar />
-            {children}
-            <Footer />
-            <CopyrightBarFoot />
-          </CartProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {" "}
+        <ClerkProvider>
+          <ClerkLoading>
+            <div className="flex h-screen justify-center items-center text-2xl">
+              Loading...
+            </div>
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <CartProvider>
+              <TopBar />
+              <Navbar />
+              {children}
+              <Footer />
+              <CopyrightBarFoot />
+            </CartProvider>
+          </ClerkLoaded>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
