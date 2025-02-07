@@ -5,6 +5,7 @@ import { CartContext } from "@/context";
 import { TProduct } from "@/types/types";
 import { useContext, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
@@ -56,7 +57,7 @@ function Cart() {
   };
 
   const cartTotal = useMemo(() => {
-    let total: number = 10;
+    let total: number = 0;
     const salesTaxRate: number = 10;
     for (const { price, quantity } of Object.values(cartData)) {
       total += price * quantity;
@@ -69,16 +70,31 @@ function Cart() {
   return (
     <div className="lg:px-7 my-7">
       <p>{user.firstName}</p>
-      {Object.values(cartData)?.map((prod: TProduct) => {
-        return (
-          <CartCard
-            key={prod.slug}
-            product={prod}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-          />
-        );
-      })}
+      {Object.values(cartData)?.length > 0 ? (
+        Object.values(cartData).map((prod: TProduct) => {
+          return (
+            <CartCard
+              key={prod.slug}
+              product={prod}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+            />
+          );
+        })
+      ) : (
+        <div className="flex flex-col items-center justify-center my-36">
+          <p className="text-3xl font-bold">
+            Your Cart is Empty{" "}
+            <Link
+              href="/"
+              className="text-2xl font-medium text-blue-900 underline"
+            >
+              Start Shopping
+            </Link>
+          </p>
+          <MdOutlineRemoveShoppingCart size={100} />
+        </div>
+      )}
       {Object.keys(cartData).length && (
         <div className="flex flex-col justify-end items-end px-2 mt-3">
           <div className="flex w-[70%] lg:w-[20%] justify-between">

@@ -8,13 +8,22 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useContext, useEffect } from "react";
 import { CartContext } from "@/context";
 import Link from "next/link";
-
+import { useUser } from "@clerk/clerk-react";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 function TopBar() {
-  const { cartData } = useContext(CartContext);
+  const { cartData, setCartData } = useContext(CartContext);
+
+  const { isSignedIn, user } = useUser();
+  console.log(user?.imageUrl);
 
   useEffect(() => {
     console.log("cart updated", cartData);
   }, [cartData]);
+
+  useEffect(() => {
+    localStorage.removeItem("cart");
+    setCartData({});
+  }, [user]);
 
   const orderCount = Object.keys(cartData).length;
   console.log(orderCount);
@@ -40,10 +49,6 @@ function TopBar() {
             <p>USD</p>
             <IoChevronDownOutline />
           </li>
-          <li className="flex mdgap-x-[5px] gap-x-[3px] items-center">
-            <p>Login</p>
-            <FaRegUser size={16} />
-          </li>
           <li className="flex md:gap-x-[5px] gap-x-[3px] items-center">
             <p>Wishlist</p>
             <CiHeart size={20} />
@@ -54,6 +59,20 @@ function TopBar() {
               <p className="absolute top-[-9px] right-[-1px]">{orderCount}</p>
             </Link>
           </li>
+          {user ? (
+            <li className="flex mdgap-x-[5px] gap-x-[3px] items-center">
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </li>
+          ) : (
+            <li className="flex mdgap-x-[5px] gap-x-[3px] items-center">
+              <Link href="/sign-in" className="flex gap-x-[3px]">
+                Login
+                <FaRegUser size={16} />
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>

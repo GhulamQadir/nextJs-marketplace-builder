@@ -5,8 +5,8 @@ import { IoSearch } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Drawer } from "antd";
 import { RxCross2 } from "react-icons/rx";
-import { useContext, useEffect, useState } from "react";
-import { CartContext } from "@/context";
+import { useState } from "react";
+
 function Navbar() {
   const [open, setOpen] = useState(false);
 
