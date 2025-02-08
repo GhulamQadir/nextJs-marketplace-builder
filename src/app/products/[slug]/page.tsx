@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 interface TProduct {
   name: string;
@@ -17,13 +17,15 @@ interface TProduct {
   stockLevel: number;
 }
 
-function ProductPage({ params }: Props) {
+async function ProductPage(props: { params: Promise<{ slug: string }> }) {
   const [data, setProdData] = useState<TProduct[] | null>(null);
-  // const [isLoading, setLoading] = useState(true);
+  const params = await props.params;
+  const { slug } = params;
+
   useEffect(() => {
     const fetchProd = async () => {
       const prodData = await client.fetch(
-        `*[_type=="product" && slug.current=="${params.slug}"]
+        `*[_type=="product" && slug.current=="${slug}"]
         { name, "image":image.asset->url, price, description, stockLevel}`
       );
       setProdData(prodData);
