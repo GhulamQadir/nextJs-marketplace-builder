@@ -30,12 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {" "}
-        <ClerkProvider>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {" "}
           <ClerkLoading>
             <div className="flex h-screen justify-center items-center text-2xl">
               Loading...
@@ -50,8 +50,8 @@ export default function RootLayout({
               <CopyrightBarFoot />
             </CartProvider>
           </ClerkLoaded>
-        </ClerkProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
