@@ -67,7 +67,7 @@ function Cart() {
     return { total, gst, grandTotal };
   }, [cartData]);
 
-  if (Object.values(cartData).length < 0) {
+  if (Object.values(cartData).length === 0) {
     return null;
   }
 
