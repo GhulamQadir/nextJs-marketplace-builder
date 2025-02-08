@@ -14,15 +14,12 @@ function TopBar() {
   const { cartData, setCartData } = useContext(CartContext);
 
   const { user } = useUser();
-  console.log(user?.imageUrl);
 
   useEffect(() => {
-    console.log("cart updated", cartData);
-  }, [cartData]);
-
-  useEffect(() => {
-    localStorage.removeItem("cart");
-    setCartData({});
+    if (!user) {
+      localStorage.removeItem("cart");
+      setCartData({});
+    }
   }, [user]);
 
   const orderCount = Object.keys(cartData).length;

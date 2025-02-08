@@ -9,7 +9,7 @@ import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user, isLoaded } = useUser();
   useEffect(() => {
     const getData = JSON.parse(localStorage.getItem("cart") || "{}");
     setCartData(getData);
@@ -67,9 +67,12 @@ function Cart() {
     return { total, gst, grandTotal };
   }, [cartData]);
 
+  if (Object.values(cartData).length < 0) {
+    return null;
+  }
+
   return (
     <div className="lg:px-7 my-7">
-      <p>{user.firstName}</p>
       {Object.values(cartData)?.length > 0 ? (
         Object.values(cartData).map((prod: TProduct) => {
           return (
@@ -92,22 +95,22 @@ function Cart() {
               Start Shopping
             </Link>
           </p>
-          <MdOutlineRemoveShoppingCart size={100} />
+          <MdOutlineRemoveShoppingCart className="mt-4" size={100} />
         </div>
       )}
-      {Object.keys(cartData).length && (
+      {Object.keys(cartData).length > 0 && (
         <div className="flex flex-col justify-end items-end px-2 mt-3">
           <div className="flex w-[70%] lg:w-[20%] justify-between">
-            <p className="text-xl font-bold">Subtotal: </p>
-            <p className="text-xl font-bold">{cartTotal.total}</p>
+            <p className="text-lg font-bold">Subtotal: </p>
+            <p className="text-lg font-bold">${cartTotal.total}</p>
           </div>
           <div className="flex w-[70%] lg:w-[20%] justify-between">
-            <p className="text-xl font-bold">Sales Tax:</p>
-            <p className="text-xl font-bold">{cartTotal.gst}</p>
+            <p className="text-lg font-bold">Sales Tax:</p>
+            <p className="text-lg font-bold">${cartTotal.gst}</p>
           </div>
-          <div className="flex w-[70%] lg:w-[20%] justify-between">
-            <p className="text-xl font-bold">Grand Total</p>
-            <p className="text-xl font-bold">{cartTotal.grandTotal}</p>
+          <div className="flex w-[70%] mt-2 lg:w-[20%] justify-between">
+            <p className="text-2xl font-bold">Grand Total</p>
+            <p className="text-xl font-bold">${cartTotal.grandTotal}</p>
           </div>
           <div className="w-[70%] lg:w-[20%] flex justify-center mt-4">
             <button className="bg-[#FB2E86] h-[30px] px-2 text-white">
