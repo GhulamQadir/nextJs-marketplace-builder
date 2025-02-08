@@ -9,6 +9,6 @@ interface CartContextT {
 }
 
 export const CartContext = createContext<CartContextT>({
-  cartData: {}, // Initialize as an empty object of objects
+  cartData: {}, 
   setCartData: () => {},
 });

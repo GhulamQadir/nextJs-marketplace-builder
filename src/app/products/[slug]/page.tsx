@@ -19,7 +19,7 @@ interface TProduct {
 
 function ProductPage({ params }: Props) {
   const [data, setProdData] = useState<TProduct[] | null>(null);
-  const [isLoading, setLoading] = useState(true);
+  // const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const fetchProd = async () => {
       const prodData = await client.fetch(
@@ -27,7 +27,7 @@ function ProductPage({ params }: Props) {
         { name, "image":image.asset->url, price, description, stockLevel}`
       );
       setProdData(prodData);
-      setLoading(false);
+      // setLoading(false);
     };
     fetchProd();
   }, []);

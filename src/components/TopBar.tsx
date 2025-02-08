@@ -13,7 +13,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 function TopBar() {
   const { cartData, setCartData } = useContext(CartContext);
 
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
   console.log(user?.imageUrl);
 
   useEffect(() => {
