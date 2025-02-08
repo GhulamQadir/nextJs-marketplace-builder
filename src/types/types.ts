@@ -18,3 +18,9 @@ export interface CartSnackT {
   snackBarState: SnackBarT;
   handleClose: () => void;
 }
+
+export interface CartTotalT {
+  subTotal: number;
+  gst: number;
+  grandTotal: number;
+}

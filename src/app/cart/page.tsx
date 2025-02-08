@@ -2,10 +2,11 @@
 import CartCard from "@/components/CartCard";
 import { useUser } from "@clerk/clerk-react";
 import { CartContext } from "@/context";
-import { TProduct } from "@/types/types";
-import { useContext, useEffect, useMemo } from "react";
+import { CartTotalT, TProduct } from "@/types/types";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
+import CartTotal from "@/components/CartTotal";
 
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
@@ -27,6 +28,7 @@ function Cart() {
   if (!isLoaded) {
     return null;
   }
+
   if (!user)
     return (
       <div className="flex justify-center my-36">
@@ -56,21 +58,26 @@ function Cart() {
     }
   };
 
-  const cartTotal = useMemo(() => {
-    let total: number = 0;
+  const calculateCartTotal = (): CartTotalT => {
+    let subTotal: number = 0;
     const salesTaxRate: number = 10;
     for (const { price, quantity } of Object.values(cartData)) {
-      total += price * quantity;
+      subTotal += price * quantity;
     }
-    const gst: number = (total * salesTaxRate) / 100;
-    const grandTotal: number = total + gst;
-    return { total, gst, grandTotal };
+    const gst: number = (subTotal * salesTaxRate) / 100;
+    const grandTotal: number = subTotal + gst;
+    return { subTotal, gst, grandTotal };
+  };
+  const [totals, setTotals] = useState<CartTotalT>({
+    subTotal: 0,
+    gst: 0,
+    grandTotal: 0,
+  });
+
+  useEffect(() => {
+    const cartTotal = calculateCartTotal();
+    setTotals(cartTotal);
   }, [cartData]);
-
-  if (Object.values(cartData).length === 0) {
-    return null;
-  }
-
   return (
     <div className="lg:px-7 my-7">
       {Object.values(cartData)?.length > 0 ? (
@@ -98,27 +105,7 @@ function Cart() {
           <MdOutlineRemoveShoppingCart className="mt-4" size={100} />
         </div>
       )}
-      {Object.keys(cartData).length > 0 && (
-        <div className="flex flex-col justify-end items-end px-2 mt-3">
-          <div className="flex w-[70%] lg:w-[20%] justify-between">
-            <p className="text-lg font-bold">Subtotal: </p>
-            <p className="text-lg font-bold">${cartTotal.total}</p>
-          </div>
-          <div className="flex w-[70%] lg:w-[20%] justify-between">
-            <p className="text-lg font-bold">Sales Tax:</p>
-            <p className="text-lg font-bold">${cartTotal.gst}</p>
-          </div>
-          <div className="flex w-[70%] mt-2 lg:w-[20%] justify-between">
-            <p className="text-2xl font-bold">Grand Total</p>
-            <p className="text-xl font-bold">${cartTotal.grandTotal}</p>
-          </div>
-          <div className="w-[70%] lg:w-[20%] flex justify-center mt-4">
-            <button className="bg-[#FB2E86] h-[30px] px-2 text-white">
-              Checkout
-            </button>
-          </div>
-        </div>
-      )}
+      {Object.keys(cartData).length > 0 && <CartTotal cartTotal={totals} />}
     </div>
   );
 }
