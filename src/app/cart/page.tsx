@@ -11,6 +11,16 @@ import CartTotal from "@/components/CartTotal";
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
   const { user, isLoaded } = useUser();
+  const [totals, setTotals] = useState<CartTotalT>({
+    subTotal: 0,
+    gst: 0,
+    grandTotal: 0,
+  });
+
+  useEffect(() => {
+    const cartTotal = calculateCartTotal();
+    setTotals(cartTotal);
+  }, [cartData]);
   useEffect(() => {
     const getData = JSON.parse(localStorage.getItem("cart") || "{}");
     setCartData(getData);
@@ -68,16 +78,7 @@ function Cart() {
     const grandTotal: number = subTotal + gst;
     return { subTotal, gst, grandTotal };
   };
-  const [totals, setTotals] = useState<CartTotalT>({
-    subTotal: 0,
-    gst: 0,
-    grandTotal: 0,
-  });
 
-  useEffect(() => {
-    const cartTotal = calculateCartTotal();
-    setTotals(cartTotal);
-  }, [cartData]);
   return (
     <div className="lg:px-7 my-7">
       {Object.values(cartData)?.length > 0 ? (
