@@ -33,7 +33,7 @@ export default function Home() {
       snackBarMessage: message,
     });
   };
-
+  console.log("testing");
   const addToCart = (product: TProduct) => {
     const newCartData = { ...cartData };
     if (newCartData[product.name]) {
