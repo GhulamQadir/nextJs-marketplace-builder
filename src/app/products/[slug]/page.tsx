@@ -1,14 +1,14 @@
 "use client";
-import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton";
-import { client } from "@/sanity/lib/client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+// import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton";
+// import { client } from "@/sanity/lib/client";
+// import Image from "next/image";
+// import { useEffect, useState } from "react";
 
-interface Props {
-  params: Promise<{
-    slug: string;
-  }>;
-}
+// interface Props {
+//   params: Promise<{
+//     slug: string;
+//   }>;
+// }
 interface TProduct {
   name: string;
   price: number;
@@ -18,29 +18,28 @@ interface TProduct {
 }
 
 async function ProductPage(props: { params: Promise<{ slug: string }> }) {
-  const [data, setProdData] = useState<TProduct[] | null>(null);
+  // const [data, setProdData] = useState<TProduct[] | null>(null);
   const params = await props.params;
   const { slug } = params;
-
-  useEffect(() => {
-    const fetchProd = async () => {
-      const prodData = await client.fetch(
-        `*[_type=="product" && slug.current=="${slug}"]
-        { name, "image":image.asset->url, price, description, stockLevel}`
-      );
-      setProdData(prodData);
-      // setLoading(false);
-    };
-    fetchProd();
-  }, []);
-  if (!data) {
-    return <ProductDetailsSkeleton />;
-  }
-  const { name, image, price, description, stockLevel } = data[0];
+  console.log("slug=>>", slug);
+  // useEffect(() => {
+  //   const fetchProd = async () => {
+  //     const prodData = await client.fetch(
+  //       `*[_type=="product" && slug.current=="${slug}"]
+  //       { name, "image":image.asset->url, price, description, stockLevel}`
+  //     );
+  //     setProdData(prodData);
+  //   };
+  //   fetchProd();
+  // }, []);
+  // if (!data) {
+  //   return <ProductDetailsSkeleton />;
+  // }
+  // const { name, image, price, description, stockLevel } = data[0];
   return (
     <div className="my-8 flex flex-wrap gap-x-4 ">
       <div>
-        <Image
+        {/* <Image
           src={image}
           height={550}
           width={500}
@@ -60,7 +59,7 @@ async function ProductPage(props: { params: Promise<{ slug: string }> }) {
           <button className="bg-[#FB2E86] h-[30px] px-[10px] text-white">
             Add to Cart
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
