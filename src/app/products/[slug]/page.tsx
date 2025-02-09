@@ -9,13 +9,13 @@
 //     slug: string;
 //   }>;
 // }
-interface TProduct {
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  stockLevel: number;
-}
+// interface TProduct {
+//   name: string;
+//   price: number;
+//   image: string;
+//   description: string;
+//   stockLevel: number;
+// }
 
 async function ProductPage(props: { params: Promise<{ slug: string }> }) {
   // const [data, setProdData] = useState<TProduct[] | null>(null);
