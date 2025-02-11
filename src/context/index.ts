@@ -10,19 +10,20 @@ interface SnackBarT {
 interface CartContextT {
   cartData: { [key: string]: TProduct };
   setCartData: React.Dispatch<
-    React.SetStateAction<{ [code: string]: TProduct }>
+    React.SetStateAction<{ [key: string]: TProduct }>
   >;
-  setSnackBarState: SnackBarT;
+  snackBarState: SnackBarT;
+  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
 }
 
 export const CartContext = createContext<CartContextT>({
   cartData: {},
-  setCartData: () => { },
-  
-  setSnackBarState: {
+  setCartData: () => {},
+  snackBarState: {
     open: false,
     vertical: "bottom",
     horizontal: "right",
     snackBarMessage: "Product added to cart!",
   },
+  setSnackBarState: () => {},
 });

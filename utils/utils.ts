@@ -1,19 +1,30 @@
-import { TProduct } from "@/types/types";
+import { SnackFunctionT, CartDataSetterT } from "@/types/types";
 
-interface CartDataSetterT {
-  product: TProduct;
-  cartData: { [key: string]: TProduct };
-  setCartData: React.Dispatch<
-    React.SetStateAction<{ [code: string]: TProduct }>
-  >;
-  // openSnackBar: (value: string) => void;
-}
+const openSnackBar = ({
+  message,
+  setSnackBarState,
+  snackBarState,
+}: SnackFunctionT) => {
+  setSnackBarState({
+    ...snackBarState,
+    open: true,
+    snackBarMessage: message,
+  });
+};
+
+const handleCloseSnackBar = ({
+  snackBarState,
+  setSnackBarState,
+}: SnackFunctionT) => {
+  setSnackBarState({ ...snackBarState, open: false });
+};
 
 const add = ({
   product,
   cartData,
   setCartData,
-  // openSnackBar,
+  snackBarState,
+  setSnackBarState,
 }: CartDataSetterT) => {
   const newCartData = { ...cartData };
   if (newCartData[product.name]) {
@@ -22,13 +33,21 @@ const add = ({
       quantity: newCartData[product.name].quantity + 1,
     };
     setCartData(newCartData);
-    // openSnackBar("Product Quantity Increased");
+    openSnackBar({
+      message: "Product Quantity Increased",
+      setSnackBarState,
+      snackBarState,
+    });
   } else {
     newCartData[product.name] = { ...product, quantity: 1 };
     setCartData(newCartData);
-    // openSnackBar("Product added to Cart");
+    openSnackBar({
+      message: "Product Added to Cart",
+      setSnackBarState,
+      snackBarState,
+    });
   }
   localStorage.setItem("cart", JSON.stringify(newCartData));
 };
 
-export default add;
+export { add, handleCloseSnackBar };

@@ -24,3 +24,19 @@ export interface CartTotalT {
   gst: number;
   grandTotal: number;
 }
+
+export interface CartDataSetterT {
+  product: TProduct;
+  cartData: { [key: string]: TProduct };
+  setCartData: React.Dispatch<
+    React.SetStateAction<{ [code: string]: TProduct }>
+  >;
+  snackBarState: SnackBarT;
+  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
+}
+
+export interface SnackFunctionT {
+  message: string;
+  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
+  snackBarState: SnackBarT;
+}

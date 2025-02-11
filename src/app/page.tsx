@@ -11,8 +11,7 @@ import BrandsImg from "@/assets/brands.png";
 import { CartContext } from "@/context";
 import { useContext, useState, useEffect } from "react";
 import { TProduct, SnackBarT } from "@/types/types";
-import add from "../../utils/utils";
-import { message } from "antd";
+import { add } from "../../utils/utils";
 
 export default function Home() {
   const { cartData, setCartData } = useContext(CartContext);
@@ -36,21 +35,7 @@ export default function Home() {
     });
   };
   const addToCart = (product: TProduct) => {
-    add({ product, cartData, setCartData });
-    // const newCartData = { ...cartData };
-    // if (newCartData[product.name]) {
-    //   newCartData[product.name] = {
-    //     ...newCartData[product.name],
-    //     quantity: newCartData[product.name].quantity + 1,
-    //   };
-    //   setCartData(newCartData);
-    //   openSnackBar("Product Quantity Increased");
-    // } else {
-    //   newCartData[product.name] = { ...product, quantity: 1 };
-    //   setCartData(newCartData);
-    //   openSnackBar("Product added to Cart");
-    // }
-    // localStorage.setItem("cart", JSON.stringify(newCartData));
+    add({ product, cartData, setCartData, snackBarState, setSnackBarState });
   };
 
   const handleCloseSnackBar = () => {

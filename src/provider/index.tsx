@@ -9,8 +9,8 @@ export default function CartProvider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [cartData, setCartData] = useState<{ [code: string]: TProduct }>({});
-  const [snackBarState, setSnackBarState] = useState({
+  const [cartData, setCartData] = useState<{ [key: string]: TProduct }>({});
+  const [snackBarState, setSnackBarState] = useState<SnackBarT>({
     open: false,
     vertical: "bottom",
     horizontal: "right",
@@ -24,7 +24,9 @@ export default function CartProvider({
   //   });
   // };
   return (
-    <CartContext.Provider value={{ cartData, setCartData, setSnackBarState }}>
+    <CartContext.Provider
+      value={{ cartData, setCartData, snackBarState, setSnackBarState }}
+    >
       {children}
     </CartContext.Provider>
   );
