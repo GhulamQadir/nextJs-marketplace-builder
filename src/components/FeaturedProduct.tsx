@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { TProduct, TSnackBar } from "@/types/types";
+import { TProduct } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
@@ -12,14 +12,8 @@ import { addToCart, handleCloseSnackBar } from "../../utils/utils";
 
 function FeaturedProduct() {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
-  const { cartData, setCartData } = useContext(CartContext);
-  const [snackBarState, setSnackBarState] = useState<TSnackBar>({
-    open: false,
-    vertical: "bottom",
-    horizontal: "right",
-    snackBarMessage: "Product added to cart!",
-  });
-
+  const { cartData, setCartData, snackBarState, setSnackBarState } =
+    useContext(CartContext);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,7 +26,7 @@ function FeaturedProduct() {
     };
     fetchFeaturedProducts();
   }, []);
-
+  console.log(featuredProducts);
   return (
     <div className="text-center my-12">
       <SnackBarComponent

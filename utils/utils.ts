@@ -27,12 +27,14 @@ const addToCart = ({
   setSnackBarState,
 }: CartDataSetterT) => {
   const newCartData = { ...cartData };
+
   if (newCartData[product.name]) {
     newCartData[product.name] = {
       ...newCartData[product.name],
       quantity: newCartData[product.name].quantity + 1,
     };
     setCartData(newCartData);
+    console.log("newCartData", newCartData);
     openSnackBar({
       message: "Product Quantity Increased",
       setSnackBarState,

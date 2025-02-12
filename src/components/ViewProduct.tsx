@@ -2,7 +2,11 @@
 import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
+import { addToCart, handleCloseSnackBar } from "../../utils/utils";
+import { CartContext } from "@/context/CartContext";
+import { TProduct } from "@/types/types";
+import SnackBarComponent from "./SnackBar";
 
 interface ViewProductT {
   name: string;
@@ -14,6 +18,9 @@ interface ViewProductT {
 
 function ViewProduct({ slug }: { slug: string }) {
   const [data, setProdData] = useState<ViewProductT[] | null>(null);
+  const { cartData, setCartData, snackBarState, setSnackBarState } =
+    useContext(CartContext);
+
   useEffect(() => {
     const fetchProd = async () => {
       const prodData = await client.fetch(
@@ -28,9 +35,22 @@ function ViewProduct({ slug }: { slug: string }) {
     return <ProductDetailsSkeleton />;
   }
   const { name, image, price, description, stockLevel } = data[0];
-
+  const product: TProduct = {
+    name: name,
+    image: image,
+    price: price,
+    description: description,
+    slug: slug,
+    quantity: 1,
+  };
   return (
     <div className="my-8 flex flex-wrap gap-x-4">
+      <SnackBarComponent
+        snackBarState={snackBarState}
+        handleClose={() =>
+          handleCloseSnackBar({ snackBarState, setSnackBarState })
+        }
+      />
       <div>
         <Image
           src={image}
@@ -49,7 +69,18 @@ function ViewProduct({ slug }: { slug: string }) {
         <p className="text-sm my-2">{stockLevel} items left in stock</p>
         {description && <p className="text-lg">{description}</p>}
         <div className="flex justify-center w-full mt-7">
-          <button className="bg-[#FB2E86] h-[30px] px-[10px] text-white">
+          <button
+            className="bg-[#FB2E86] h-[30px] px-[10px] text-white"
+            onClick={() =>
+              addToCart({
+                product ,
+                cartData,
+                setCartData,
+                snackBarState,
+                setSnackBarState,
+              })
+            }
+          >
             Add to Cart
           </button>
         </div>

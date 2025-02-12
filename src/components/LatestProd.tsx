@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
-import { TProduct, TSnackBar } from "@/types/types";
+import { TProduc } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
@@ -13,13 +13,8 @@ import { addToCart, handleCloseSnackBar } from "../../utils/utils";
 function LatestProduct() {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
   const [isLoading, setLoading] = useState(true);
-  const { cartData, setCartData } = useContext(CartContext);
-  const [snackBarState, setSnackBarState] = useState<TSnackBar>({
-    open: false,
-    vertical: "bottom",
-    horizontal: "right",
-    snackBarMessage: "Product added to cart!",
-  });
+  const { cartData, setCartData, snackBarState, setSnackBarState } =
+    useContext(CartContext);
   useEffect(() => {
     setLoading(true);
     const fetchLatestProducts = async () => {

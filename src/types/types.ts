@@ -1,6 +1,6 @@
 export interface TProduct {
   name: string;
-  code: string;
+  description: string;
   price: number;
   image: string;
   slug: string;
