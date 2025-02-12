@@ -1,19 +1,24 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { TProduct, CartSnackT } from "@/types/types";
+import { TProduct, TSnackBar } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
+import { CartContext } from "@/context/CartContext";
+import { addToCart, handleCloseSnackBar } from "../../utils/utils";
 
-function FeaturedProduct({
-  addToCart,
-  handleClose,
-  snackBarState,
-}: CartSnackT) {
+function FeaturedProduct() {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
+  const { cartData, setCartData } = useContext(CartContext);
+  const [snackBarState, setSnackBarState] = useState<TSnackBar>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "right",
+    snackBarMessage: "Product added to cart!",
+  });
 
   const [isLoading, setLoading] = useState(true);
 
@@ -28,12 +33,13 @@ function FeaturedProduct({
     fetchFeaturedProducts();
   }, []);
 
-
   return (
     <div className="text-center my-12">
       <SnackBarComponent
         snackBarState={snackBarState}
-        handleClose={handleClose}
+        handleClose={() =>
+          handleCloseSnackBar({ snackBarState, setSnackBarState })
+        }
       />
       <div className="mb-3">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
@@ -45,8 +51,8 @@ function FeaturedProduct({
         <LoadingSkeleton />
       ) : (
         <div className="flex flex-wrap justify-center gap-x-4 mt-5 lg:w-3/4 m-auto">
-          {featuredProducts?.map((prod: TProduct) => {
-            const { name, price, image, slug } = prod;
+          {featuredProducts?.map((product: TProduct) => {
+            const { name, price, image, slug } = product;
             return (
               <div key={nanoid()} className="shadow-lg rounded-xl mb-6">
                 <Link href={`products/${slug}`}>
@@ -71,7 +77,15 @@ function FeaturedProduct({
                   </div>
                 </Link>
                 <button
-                  onClick={() => addToCart(prod)}
+                  onClick={() =>
+                    addToCart({
+                      product,
+                      cartData,
+                      setCartData,
+                      snackBarState,
+                      setSnackBarState,
+                    })
+                  }
                   className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
                 >
                   Add to Cart

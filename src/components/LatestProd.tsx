@@ -1,21 +1,25 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { TProduct, CartSnackT } from "@/types/types";
+import { useState, useEffect, useContext } from "react";
+import { TProduct, TSnackBar } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
+import { CartContext } from "@/context/CartContext";
+import { addToCart, handleCloseSnackBar } from "../../utils/utils";
 
-function LatestProduct({
-  addToCart,
-  handleClose,
-  snackBarState,
-}: CartSnackT) {
+function LatestProduct() {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
   const [isLoading, setLoading] = useState(true);
-
+  const { cartData, setCartData } = useContext(CartContext);
+  const [snackBarState, setSnackBarState] = useState<TSnackBar>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "right",
+    snackBarMessage: "Product added to cart!",
+  });
   useEffect(() => {
     setLoading(true);
     const fetchLatestProducts = async () => {
@@ -31,7 +35,9 @@ function LatestProduct({
     <div>
       <SnackBarComponent
         snackBarState={snackBarState}
-        handleClose={handleClose}
+        handleClose={() =>
+          handleCloseSnackBar({ snackBarState, setSnackBarState })
+        }
       />
       <div className="text-center">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
@@ -51,8 +57,8 @@ function LatestProduct({
         <LoadingSkeleton />
       ) : (
         <div className="flex flex-wrap justify-center gap-x-6 mt-5 lg:w-[80%] lg:m-auto">
-          {latestProducts?.map((prod) => {
-            const { image, name, price, slug } = prod;
+          {latestProducts?.map((product: TProduct) => {
+            const { image, name, price, slug } = product;
             return (
               <div className="mb-8" key={nanoid()}>
                 <Link href={`products/${slug}`}>
@@ -79,7 +85,15 @@ function LatestProduct({
                 </Link>
                 <div className="flex justify-center w-full">
                   <button
-                    onClick={() => addToCart(prod)}
+                    onClick={() =>
+                      addToCart({
+                        product,
+                        cartData,
+                        setCartData,
+                        snackBarState,
+                        setSnackBarState,
+                      })
+                    }
                     className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
                   >
                     Add to Cart

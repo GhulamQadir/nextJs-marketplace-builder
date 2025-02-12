@@ -1,10 +1,10 @@
-import { SnackFunctionT, CartDataSetterT } from "@/types/types";
+import { OpenSnackT, CartDataSetterT, CloseSnackT } from "@/types/types";
 
 const openSnackBar = ({
   message,
   setSnackBarState,
   snackBarState,
-}: SnackFunctionT) => {
+}: OpenSnackT) => {
   setSnackBarState({
     ...snackBarState,
     open: true,
@@ -15,11 +15,11 @@ const openSnackBar = ({
 const handleCloseSnackBar = ({
   snackBarState,
   setSnackBarState,
-}: SnackFunctionT) => {
+}: CloseSnackT) => {
   setSnackBarState({ ...snackBarState, open: false });
 };
 
-const add = ({
+const addToCart = ({
   product,
   cartData,
   setCartData,
@@ -50,4 +50,4 @@ const add = ({
   localStorage.setItem("cart", JSON.stringify(newCartData));
 };
 
-export { add, handleCloseSnackBar };
+export { addToCart, handleCloseSnackBar };

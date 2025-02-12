@@ -1,7 +1,7 @@
 "use client";
 import CartCard from "@/components/CartCard";
 import { useUser } from "@clerk/clerk-react";
-import { CartContext } from "@/context";
+import { CartContext } from "@/context/CartContext";
 import { CartTotalT, TProduct } from "@/types/types";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";

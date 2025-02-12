@@ -7,16 +7,11 @@ export interface TProduct {
   quantity: number;
 }
 
-export interface SnackBarT {
+export interface TSnackBar {
   open: boolean;
   vertical: "top" | "bottom";
   horizontal: "left" | "center" | "right";
   snackBarMessage: string;
-}
-export interface CartSnackT {
-  addToCart: (product: TProduct) => void;
-  snackBarState: SnackBarT;
-  handleClose: () => void;
 }
 
 export interface CartTotalT {
@@ -31,12 +26,17 @@ export interface CartDataSetterT {
   setCartData: React.Dispatch<
     React.SetStateAction<{ [code: string]: TProduct }>
   >;
-  snackBarState: SnackBarT;
-  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
+  snackBarState: TSnackBar;
+  setSnackBarState: React.Dispatch<React.SetStateAction<TSnackBar>>;
 }
 
-export interface SnackFunctionT {
+export interface OpenSnackT {
   message: string;
-  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
-  snackBarState: SnackBarT;
+  setSnackBarState: React.Dispatch<React.SetStateAction<TSnackBar>>;
+  snackBarState: TSnackBar;
+}
+
+export interface CloseSnackT {
+  setSnackBarState: React.Dispatch<React.SetStateAction<TSnackBar>>;
+  snackBarState: TSnackBar;
 }

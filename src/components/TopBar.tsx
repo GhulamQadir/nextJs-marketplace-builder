@@ -6,7 +6,7 @@ import { FaRegUser } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { FiShoppingCart } from "react-icons/fi";
 import { useContext, useEffect } from "react";
-import { CartContext } from "@/context";
+import { CartContext } from "@/context/CartContext";
 import Link from "next/link";
 import { useUser } from "@clerk/clerk-react";
 import { SignedIn, UserButton } from "@clerk/nextjs";

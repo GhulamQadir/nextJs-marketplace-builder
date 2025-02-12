@@ -1,19 +1,13 @@
-import { TProduct } from "@/types/types";
+import { TProduct, TSnackBar } from "@/types/types";
 import { createContext } from "react";
 
-interface SnackBarT {
-  open: boolean;
-  vertical: "top" | "bottom";
-  horizontal: "left" | "center" | "right";
-  snackBarMessage: string;
-}
 interface CartContextT {
   cartData: { [key: string]: TProduct };
   setCartData: React.Dispatch<
     React.SetStateAction<{ [key: string]: TProduct }>
   >;
-  snackBarState: SnackBarT;
-  setSnackBarState: React.Dispatch<React.SetStateAction<SnackBarT>>;
+  snackBarState: TSnackBar;
+  setSnackBarState: React.Dispatch<React.SetStateAction<TSnackBar>>;
 }
 
 export const CartContext = createContext<CartContextT>({
