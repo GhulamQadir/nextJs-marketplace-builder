@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
-import { TProduc } from "@/types/types";
+import { TProduct } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";

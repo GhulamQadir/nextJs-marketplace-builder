@@ -1,10 +1,10 @@
 "use client";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { SnackBarT } from "@/types/types";
+import { TSnackBar } from "@/types/types";
 
 interface SnackBarType {
-  snackBarState: SnackBarT;
+  snackBarState: TSnackBar;
   handleClose: () => void;
 }
 

@@ -12,7 +12,7 @@ import { CartContext } from "@/context/CartContext";
 import { useContext, useEffect } from "react";
 
 export default function Home() {
-  const { cartData, setCartData } = useContext(CartContext);
+  const { setCartData } = useContext(CartContext);
 
   useEffect(() => {
     const getCart = JSON.parse(localStorage.getItem("cart") || "{}");
