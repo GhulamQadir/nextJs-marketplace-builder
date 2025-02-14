@@ -4,17 +4,38 @@ import { useContext, useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { TProduct } from "@/types/types";
+import { AddToCartProdT, TProduct } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
-import { addToCart, handleCloseSnackBar } from "../../utils/utils";
+import { useRouter } from "next/navigation";
+import { handleCart, handleCloseSnackBar } from "../../utils/utils";
+import { useUser } from "@clerk/clerk-react";
 
 function FeaturedProduct() {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
   const { cartData, setCartData, snackBarState, setSnackBarState } =
     useContext(CartContext);
   const [isLoading, setLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useUser();
+
+  const userName = user?.fullName;
+  const addToCart = ({ userName, product }: AddToCartProdT) => {
+    console.log("dasdasdasd", userName);
+    if (userName) {
+      handleCart({
+        userName,
+        product,
+        cartData,
+        setCartData,
+        snackBarState,
+        setSnackBarState,
+      });
+    } else {
+      router.push("/sign-in");
+    }
+  };
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -26,7 +47,6 @@ function FeaturedProduct() {
     };
     fetchFeaturedProducts();
   }, []);
-  console.log(featuredProducts);
   return (
     <div className="text-center my-12">
       <SnackBarComponent
@@ -73,11 +93,8 @@ function FeaturedProduct() {
                 <button
                   onClick={() =>
                     addToCart({
+                      userName,
                       product,
-                      cartData,
-                      setCartData,
-                      snackBarState,
-                      setSnackBarState,
                     })
                   }
                   className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"

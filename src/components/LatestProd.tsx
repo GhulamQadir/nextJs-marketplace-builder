@@ -1,20 +1,43 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
-import { TProduct } from "@/types/types";
+import { AddToCartProdT, TProduct } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
+import { useUser } from "@clerk/clerk-react";
 import Link from "next/link";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
-import { addToCart, handleCloseSnackBar } from "../../utils/utils";
+import { useRouter } from "next/navigation";
+import { handleCart, handleCloseSnackBar } from "../../utils/utils";
+
 
 function LatestProduct() {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
   const [isLoading, setLoading] = useState(true);
   const { cartData, setCartData, snackBarState, setSnackBarState } =
     useContext(CartContext);
+  const router = useRouter();
+  const { user } = useUser();
+  const userName = user?.fullName;
+
+  const addToCart = ({ userName, product }: AddToCartProdT) => {
+    console.log("dasdasdasd", userName);
+    if (userName) {
+      handleCart({
+        userName,
+        product,
+        cartData,
+        setCartData,
+        snackBarState,
+        setSnackBarState,
+      });
+    } else {
+      router.push("/sign-in");
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     const fetchLatestProducts = async () => {
@@ -82,11 +105,8 @@ function LatestProduct() {
                   <button
                     onClick={() =>
                       addToCart({
+                        userName,
                         product,
-                        cartData,
-                        setCartData,
-                        snackBarState,
-                        setSnackBarState,
                       })
                     }
                     className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"

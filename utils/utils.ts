@@ -19,7 +19,8 @@ const handleCloseSnackBar = ({
   setSnackBarState({ ...snackBarState, open: false });
 };
 
-const addToCart = ({
+const handleCart = ({
+  userName,
   product,
   cartData,
   setCartData,
@@ -52,4 +53,4 @@ const addToCart = ({
   localStorage.setItem("cart", JSON.stringify(newCartData));
 };
 
-export { addToCart, handleCloseSnackBar };
+export { handleCart, handleCloseSnackBar };

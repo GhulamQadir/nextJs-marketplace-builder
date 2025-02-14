@@ -3,10 +3,12 @@ import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import { useEffect, useContext, useState } from "react";
-import { addToCart, handleCloseSnackBar } from "../../utils/utils";
+import { handleCart, handleCloseSnackBar } from "../../utils/utils";
 import { CartContext } from "@/context/CartContext";
-import { TProduct } from "@/types/types";
+import { AddToCartProdT, TProduct } from "@/types/types";
 import SnackBarComponent from "./SnackBar";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
 
 interface ViewProductT {
   name: string;
@@ -20,6 +22,25 @@ function ViewProduct({ slug }: { slug: string }) {
   const [data, setProdData] = useState<ViewProductT[] | null>(null);
   const { cartData, setCartData, snackBarState, setSnackBarState } =
     useContext(CartContext);
+  const router = useRouter();
+  const { user } = useUser();
+
+  const userName = user?.fullName;
+  const addToCart = ({ userName, product }: AddToCartProdT) => {
+    console.log("dasdasdasd", userName);
+    if (userName) {
+      handleCart({
+        userName,
+        product,
+        cartData,
+        setCartData,
+        snackBarState,
+        setSnackBarState,
+      });
+    } else {
+      router.push("/sign-in");
+    }
+  };
 
   useEffect(() => {
     const fetchProd = async () => {
@@ -73,11 +94,8 @@ function ViewProduct({ slug }: { slug: string }) {
             className="bg-[#FB2E86] h-[30px] px-[10px] text-white"
             onClick={() =>
               addToCart({
-                product ,
-                cartData,
-                setCartData,
-                snackBarState,
-                setSnackBarState,
+                userName,
+                product,
               })
             }
           >
