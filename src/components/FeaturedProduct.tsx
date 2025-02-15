@@ -4,14 +4,13 @@ import { useContext, useEffect, useState } from "react";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import Link from "next/link";
-import { AddToCartProdT, TProduct } from "@/types/types";
+import { TProduct } from "@/types/types";
 import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { handleCart, handleCloseSnackBar } from "../../utils/utils";
 import { useUser } from "@clerk/clerk-react";
-import { IoSearch } from "react-icons/io5";
 import SearchField from "./SearchField";
 
 function FeaturedProduct() {
@@ -23,11 +22,9 @@ function FeaturedProduct() {
   const router = useRouter();
   const { user } = useUser();
 
-  const userName = user?.fullName;
-  const addToCart = ({ userName, product }: AddToCartProdT) => {
-    if (userName) {
+  const addToCart = (product: TProduct) => {
+    if (user) {
       handleCart({
-        userName,
         product,
         cartData,
         setCartData,
@@ -41,7 +38,6 @@ function FeaturedProduct() {
 
   const searchProduct = (value: string) => {
     const searchedVal = value.trim().toLowerCase();
-    console.log("featued=>>", featuredProducts);
     const filterProducts = products.filter((prod) => {
       const prodName = prod.name.toLowerCase();
       return prodName.startsWith(searchedVal);
@@ -105,12 +101,7 @@ function FeaturedProduct() {
                   </div>
                 </Link>
                 <button
-                  onClick={() =>
-                    addToCart({
-                      userName,
-                      product,
-                    })
-                  }
+                  onClick={() => addToCart(product)}
                   className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
                 >
                   Add to Cart

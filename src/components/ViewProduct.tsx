@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useContext, useState } from "react";
 import { handleCart, handleCloseSnackBar } from "../../utils/utils";
 import { CartContext } from "@/context/CartContext";
-import { AddToCartProdT, TProduct } from "@/types/types";
+import { TProduct } from "@/types/types";
 import SnackBarComponent from "./SnackBar";
 import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
@@ -25,11 +25,9 @@ function ViewProduct({ slug }: { slug: string }) {
   const router = useRouter();
   const { user } = useUser();
 
-  const userName = user?.fullName;
-  const addToCart = ({ userName, product }: AddToCartProdT) => {
-    if (userName) {
+  const addToCart = (product: TProduct) => {
+    if (user) {
       handleCart({
-        userName,
         product,
         cartData,
         setCartData,
@@ -91,12 +89,7 @@ function ViewProduct({ slug }: { slug: string }) {
         <div className="flex justify-center w-full mt-7">
           <button
             className="bg-[#FB2E86] h-[30px] px-[10px] text-white"
-            onClick={() =>
-              addToCart({
-                userName,
-                product,
-              })
-            }
+            onClick={() => addToCart(product)}
           >
             Add to Cart
           </button>

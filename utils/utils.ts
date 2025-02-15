@@ -20,7 +20,6 @@ const handleCloseSnackBar = ({
 };
 
 const handleCart = ({
-  userName,
   product,
   cartData,
   setCartData,

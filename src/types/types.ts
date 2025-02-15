@@ -25,7 +25,6 @@ export interface SearchFieldProps {
 }
 
 export interface CartDataSetterT {
-  userName: string | undefined | null;
   product: TProduct;
   cartData: { [key: string]: TProduct };
   setCartData: React.Dispatch<
@@ -33,11 +32,6 @@ export interface CartDataSetterT {
   >;
   snackBarState: TSnackBar;
   setSnackBarState: React.Dispatch<React.SetStateAction<TSnackBar>>;
-}
-
-export interface AddToCartProdT {
-  userName: string | undefined | null;
-  product: TProduct;
 }
 
 export interface OpenSnackT {

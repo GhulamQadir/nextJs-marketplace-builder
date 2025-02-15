@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
-import { AddToCartProdT, TProduct } from "@/types/types";
+import { TProduct } from "@/types/types";
 import { client } from "../sanity/lib/client";
 import { nanoid } from "nanoid";
 import { useUser } from "@clerk/clerk-react";
@@ -22,12 +22,10 @@ function LatestProduct() {
     useContext(CartContext);
   const router = useRouter();
   const { user } = useUser();
-  const userName = user?.fullName;
 
-  const addToCart = ({ userName, product }: AddToCartProdT) => {
-    if (userName) {
+  const addToCart = (product: TProduct) => {
+    if (user) {
       handleCart({
-        userName,
         product,
         cartData,
         setCartData,
@@ -116,12 +114,7 @@ function LatestProduct() {
                 </Link>
                 <div className="flex justify-center w-full">
                   <button
-                    onClick={() =>
-                      addToCart({
-                        userName,
-                        product,
-                      })
-                    }
+                    onClick={() => addToCart(product)}
                     className="bg-[#FB2E86] h-[30px] px-[10px] my-1 text-white"
                   >
                     Add to Cart
