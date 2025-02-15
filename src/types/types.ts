@@ -20,6 +20,10 @@ export interface CartTotalT {
   grandTotal: number;
 }
 
+export interface SearchFieldProps {
+  searchProduct: (value: string) => void;
+}
+
 export interface CartDataSetterT {
   userName: string | undefined | null;
   product: TProduct;

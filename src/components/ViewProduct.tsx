@@ -27,7 +27,6 @@ function ViewProduct({ slug }: { slug: string }) {
 
   const userName = user?.fullName;
   const addToCart = ({ userName, product }: AddToCartProdT) => {
-    console.log("dasdasdasd", userName);
     if (userName) {
       handleCart({
         userName,

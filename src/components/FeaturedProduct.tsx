@@ -11,9 +11,12 @@ import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { handleCart, handleCloseSnackBar } from "../../utils/utils";
 import { useUser } from "@clerk/clerk-react";
+import { IoSearch } from "react-icons/io5";
+import SearchField from "./SearchField";
 
 function FeaturedProduct() {
   const [featuredProducts, setFeaturedProducts] = useState<TProduct[] | []>([]);
+  const [products, setProducts] = useState<TProduct[] | []>([]);
   const { cartData, setCartData, snackBarState, setSnackBarState } =
     useContext(CartContext);
   const [isLoading, setLoading] = useState(true);
@@ -22,7 +25,6 @@ function FeaturedProduct() {
 
   const userName = user?.fullName;
   const addToCart = ({ userName, product }: AddToCartProdT) => {
-    console.log("dasdasdasd", userName);
     if (userName) {
       handleCart({
         userName,
@@ -37,12 +39,23 @@ function FeaturedProduct() {
     }
   };
 
+  const searchProduct = (value: string) => {
+    const searchedVal = value.trim().toLowerCase();
+    console.log("featued=>>", featuredProducts);
+    const filterProducts = products.filter((prod) => {
+      const prodName = prod.name.toLowerCase();
+      return prodName.startsWith(searchedVal);
+    });
+    setFeaturedProducts(filterProducts);
+  };
+
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       const data = await client.fetch(
         `*[_type == 'product' && isFeaturedProduct]{name, price, description, "slug":slug.current, "image": image.asset->url,}`
       );
       setFeaturedProducts(data);
+      setProducts(data);
       setLoading(false);
     };
     fetchFeaturedProducts();
@@ -55,10 +68,11 @@ function FeaturedProduct() {
           handleCloseSnackBar({ snackBarState, setSnackBarState })
         }
       />
-      <div className="mb-3">
+      <div className="mb-5 flex justify-center items-center gap-x-10">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
           Featured Products
         </p>
+        <SearchField searchProduct={searchProduct} />
       </div>
 
       {isLoading ? (

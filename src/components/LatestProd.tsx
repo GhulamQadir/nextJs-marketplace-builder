@@ -11,10 +11,12 @@ import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { handleCart, handleCloseSnackBar } from "../../utils/utils";
-
+import SearchField from "./SearchField";
 
 function LatestProduct() {
   const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
+  const [products, setProducts] = useState<TProduct[] | []>([]);
+
   const [isLoading, setLoading] = useState(true);
   const { cartData, setCartData, snackBarState, setSnackBarState } =
     useContext(CartContext);
@@ -23,7 +25,6 @@ function LatestProduct() {
   const userName = user?.fullName;
 
   const addToCart = ({ userName, product }: AddToCartProdT) => {
-    console.log("dasdasdasd", userName);
     if (userName) {
       handleCart({
         userName,
@@ -38,6 +39,16 @@ function LatestProduct() {
     }
   };
 
+  const searchProduct = (value: string) => {
+    const searchedVal = value.trim().toLowerCase();
+    console.log("featued=>>", latestProducts);
+    const filterProducts = products.filter((prod) => {
+      const prodName = prod.name.toLowerCase();
+      return prodName.startsWith(searchedVal);
+    });
+    setLatestProducts(filterProducts);
+  };
+
   useEffect(() => {
     setLoading(true);
     const fetchLatestProducts = async () => {
@@ -45,6 +56,7 @@ function LatestProduct() {
         `*[_type == 'product' && isLatestProduct]{name, price, description, "slug":slug.current, "image": image.asset->url,}`
       );
       setLatestProducts(data);
+      setProducts(data);
       setLoading(false);
     };
     fetchLatestProducts();
@@ -57,10 +69,11 @@ function LatestProduct() {
           handleCloseSnackBar({ snackBarState, setSnackBarState })
         }
       />
-      <div className="text-center">
+      <div className="mb-5 flex justify-center items-center gap-x-10">
         <p className="text-3xl text-[#1A0B5B] font-bold font-josefin">
           Latest Products
         </p>
+        <SearchField searchProduct={searchProduct} />
       </div>
 
       <ul className="flex justify-center md:gap-x-10 gap-x-5 font-lato md:text-lg text-base mt-4 lg:mb-5">
