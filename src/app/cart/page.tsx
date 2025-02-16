@@ -10,7 +10,7 @@ import CartTotal from "@/components/CartTotal";
 
 function Cart() {
   const { cartData, setCartData } = useContext(CartContext);
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
   const [totals, setTotals] = useState<CartTotalT>({
     subTotal: 0,
     gst: 0,
@@ -35,9 +35,6 @@ function Cart() {
     setCartData(newCartData);
     localStorage.setItem("cart", JSON.stringify(newCartData));
   };
-  if (!isLoaded) {
-    return null;
-  }
 
   if (!user)
     return (
