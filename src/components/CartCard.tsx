@@ -2,11 +2,6 @@ import { TProduct } from "@/types/types";
 import Image from "next/image";
 
 interface CartCardT {
-  //   name: string;
-  //   image: string;
-  //   price: number;
-  //   quantity: number;
-  //   slug: string;
   product: TProduct;
   increaseQuantity: (name: string) => void;
   decreaseQuantity: (name: string) => void;

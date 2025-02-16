@@ -17,6 +17,17 @@ function Cart() {
     grandTotal: 0,
   });
 
+  const calculateCartTotal = (): CartTotalT => {
+    let subTotal: number = 0;
+    const salesTaxRate: number = 10;
+    for (const { price, quantity } of Object.values(cartData)) {
+      subTotal += price * quantity;
+    }
+    const gst: number = (subTotal * salesTaxRate) / 100;
+    const grandTotal: number = subTotal + gst;
+    return { subTotal, gst, grandTotal };
+  };
+
   useEffect(() => {
     const cartTotal = calculateCartTotal();
     setTotals(cartTotal);
@@ -63,17 +74,6 @@ function Cart() {
       setCartData(newCartData);
       localStorage.setItem("cart", JSON.stringify(newCartData));
     }
-  };
-
-  const calculateCartTotal = (): CartTotalT => {
-    let subTotal: number = 0;
-    const salesTaxRate: number = 10;
-    for (const { price, quantity } of Object.values(cartData)) {
-      subTotal += price * quantity;
-    }
-    const gst: number = (subTotal * salesTaxRate) / 100;
-    const grandTotal: number = subTotal + gst;
-    return { subTotal, gst, grandTotal };
   };
 
   return (
