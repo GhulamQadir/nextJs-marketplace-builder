@@ -24,6 +24,14 @@ export interface SearchFieldProps {
   searchProduct: (value: string) => void;
 }
 
+export interface SearchFuncT {
+  searchVal: string;
+  products: TProduct[];
+  setProducts: React.Dispatch<
+    React.SetStateAction<TProduct[] | []>
+  >;
+}
+
 export interface CartDataSetterT {
   product: TProduct;
   cartData: { [key: string]: TProduct };

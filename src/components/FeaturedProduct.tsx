@@ -9,7 +9,7 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-import { handleCart, handleCloseSnackBar } from "../../utils/utils";
+import { handleCart, handleCloseSnackBar, search } from "../../utils/utils";
 import { useUser } from "@clerk/clerk-react";
 import SearchField from "./SearchField";
 
@@ -37,12 +37,7 @@ function FeaturedProduct() {
   };
 
   const searchProduct = (value: string) => {
-    const searchedVal = value.trim().toLowerCase();
-    const filterProducts = products.filter((prod) => {
-      const prodName = prod.name.toLowerCase();
-      return prodName.startsWith(searchedVal);
-    });
-    setFeaturedProducts(filterProducts);
+    search({ searchVal: value, products, setProducts: setFeaturedProducts })
   };
 
   useEffect(() => {

@@ -10,11 +10,11 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import SnackBarComponent from "./SnackBar";
 import { CartContext } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-import { handleCart, handleCloseSnackBar } from "../../utils/utils";
+import { handleCart, handleCloseSnackBar, search } from "../../utils/utils";
 import SearchField from "./SearchField";
 
 function LatestProduct() {
-  const [latestProducts, setLatestProducts] = useState<TProduct[] | null>(null);
+  const [latestProducts, setLatestProducts] = useState<TProduct[] | []>([]);
   const [products, setProducts] = useState<TProduct[] | []>([]);
 
   const [isLoading, setLoading] = useState(true);
@@ -38,13 +38,7 @@ function LatestProduct() {
   };
 
   const searchProduct = (value: string) => {
-    const searchedVal = value.trim().toLowerCase();
-    console.log("featued=>>", latestProducts);
-    const filterProducts = products.filter((prod) => {
-      const prodName = prod.name.toLowerCase();
-      return prodName.startsWith(searchedVal);
-    });
-    setLatestProducts(filterProducts);
+    search({ searchVal: value, products, setProducts: setLatestProducts })
   };
 
   useEffect(() => {

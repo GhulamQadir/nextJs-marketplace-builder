@@ -1,4 +1,4 @@
-import { OpenSnackT, CartDataSetterT, CloseSnackT } from "@/types/types";
+import { OpenSnackT, CartDataSetterT, CloseSnackT, TProduct, SearchFuncT } from "@/types/types";
 
 const openSnackBar = ({
   message,
@@ -52,4 +52,14 @@ const handleCart = ({
   localStorage.setItem("cart", JSON.stringify(newCartData));
 };
 
-export { handleCart, handleCloseSnackBar };
+
+const search = ({ searchVal, products, setProducts }: SearchFuncT) => {
+  const searchedVal = searchVal.trim().toLowerCase();
+  const filterProducts = products.filter((prod) => {
+    const prodName = prod.name.toLowerCase();
+    return prodName.startsWith(searchedVal);
+  });
+  setProducts(filterProducts);
+};
+
+export { handleCart, handleCloseSnackBar, search };
