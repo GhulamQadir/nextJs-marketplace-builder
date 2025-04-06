@@ -1,4 +1,5 @@
 import { CartTotalT } from "@/types/types";
+import Link from "next/link";
 import React from "react";
 
 interface MyCartTotalT {
@@ -22,9 +23,11 @@ function CartTotal({ cartTotal }: MyCartTotalT) {
         <p className="text-xl font-bold">${grandTotal}</p>
       </div>
       <div className="w-[70%] lg:w-[20%] flex justify-center mt-4">
-        <button className="bg-[#FB2E86] h-[30px] px-2 text-white">
-          Checkout
-        </button>
+        <Link href={"/cart/checkout"}>
+          <button className="bg-[#FB2E86] h-[30px] px-2 text-white">
+            Checkout
+          </button>
+        </Link>
       </div>
     </div>
   );
